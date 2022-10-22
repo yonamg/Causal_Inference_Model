@@ -1,55 +1,83 @@
+import sys
+
+import numpy as np
 import pandas as pd
-from logger import get_logger
+from logger import Logger
 
-my_logger = get_logger("DfOverview")
-my_logger.debug("Loaded successfully!")
 
-class DfOverview:
-  """
-      Give an overview for a given data frame, 
-      like null persentage for each columns, 
-      unique value percentage for each columns and more
-  """
+class Overview:
+    def __init__(self, df: pd.DataFrame):
+        """Initialize the PreProcess class.
+        Args:
+            df (pd.DataFrame): dataframe to be preprocessed
+        """
+        try:
+            self.df = df
+            self.logger = Logger("overview.log").get_app_logger()
+            self.logger.info("Successfully Instantiated Outlier Class Object")
+        except Exception:
+            self.logger.exception("Failed to Instantiate Preprocessing Class Object")
+            sys.exit(1)
 
-  def __init__(self, df: pd.DataFrame) -> None:
-      self.df = df  
-    
+    # how many missing values exist or better still what is the % of missing values in the dataset?
 
-  def missing_value(self) -> None:
-    nullSum = self.df.isna().sum()
-    return [col for col in nullSum]
+    def percent_missing(self, df: pd.DataFrame):
+        """Get the percentage of missing values in the dataset.
+        Args:
+            df (pd.DataFrame): a dataframe to be preprocessed
+        Returns:
+            pd.DataFrame: the dataframe
+        """
+        # Calculate total number of cells in dataframe
+        totalCells = np.product(df.shape)
 
-  def unique_values(self) -> None:
-    return [self.getUniqueCount(column) for column in self.df]
+        # Count number of missing values per column
+        missingCount = df.isnull().sum()
 
-  def percentage(self, list):
-    return [str(round(((value / self.df.shape[0]) * 100), 2)) + '%' for value in list]
+        # Calculate total number of missing values
+        totalMissing = missingCount.sum()
 
-  def getOverview(self) -> None:
+        # Calculate percentage of missing values
+        self.logger.info("Missing value of the dataset calculated")
+        print(
+            "The dataset contains",
+            round(((totalMissing / totalCells) * 100), 2),
+            "%",
+            "missing values.",
+        )
 
-    _labels = [column for column in self.df]  # Only numeric columns
-    _count = self.df.count().values
-    _unique = [self.df[column].value_counts().shape[0] for column in self.df]
-    _missing_values = self.missing_value()
+        # return df
 
-    columns = [
-      'label',
-      'count',
-      'missing_count',
-      'missing_percentage',
-      'unique_value_count',
-      'unique_percentage',
-      'dtype']
-    data = zip(
-      _labels,
-      _count,
-      _missing_values,
-      self.percentage(_missing_values),
-      _unique,
-      self.percentage(_unique),
-      self.df.dtypes
-    )
-    new_df = pd.DataFrame(data=data, columns=columns)
-    new_df.set_index('label', inplace=True)
-    new_df.sort_values(by=["missing_count"], inplace=True)
-    return new_df
+    def number_of_duplicates(self, df):
+        """Return the number of duplicates in the dataset.
+        Args:
+            df (pd.DataFrame): Dataset to be analyzed
+        """
+        duplicated_entries = df[df.duplicated()]
+        self.logger.info("Number of duplicated fields calculated")
+        print(duplicated_entries.shape)
+
+    def get_skewness(self, df):
+        """Return the skewness of the dataset.
+        Args:
+            df (pd.DataFrame): a dataframe to be analyzed
+        """
+        # calculate skewness
+        skewness = df.skew(axis=0, skipna=True)
+        self.logger.info("Skewness calculated")
+        return skewness
+
+    def get_decile(
+        self, df: pd.DataFrame, column: str, decile: int, labels: list = []
+    ) -> pd.DataFrame:
+        """Get the decile based on the column.
+        Args:
+            df (pd.DataFrame): Dataset to be used for Decile
+            column (str): column to calculate the decile
+            decile (int): number of decile
+            labels (list, optional): Decile labels. Defaults to [].
+        Returns:
+            pd.DataFrame: Calculated decile
+        """
+        df["deciles"] = pd.qcut(df[column], decile, labels=labels)
+        return df

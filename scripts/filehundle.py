@@ -5,9 +5,9 @@ Returns:
 import json
 import sys
 from git import Object
-import pandas as pd
+#import pandas as pd
 from logger import Logger
-
+import pandas as pd
 
 class LoadData:
     """

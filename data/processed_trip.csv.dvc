@@ -1,0 +1,4 @@
+outs:
+- md5: 740edf8953344a57f214fa53cd6a231a
+  size: 79954137
+  path: processed_trip.csv

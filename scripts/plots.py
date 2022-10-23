@@ -13,16 +13,6 @@ from pandas_profiling import ProfileReport
 
 
 class Plot:
-    def __init__(self) -> None:
-        """Initilize class."""
-        try:
-            pass
-            self.logger = Logger("plot.log").get_app_logger()
-            self.logger.info("Successfully Instantiated Preprocessing Class Object")
-        except Exception:
-            self.logger.exception("Failed to Instantiate Preprocessing Class Object")
-            sys.exit(1)
-
     def plot_profile(self, df: pd.DataFrame, title: str) -> None:
         """Plot the profile of the dataset.
         Args:

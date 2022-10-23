@@ -1,0 +1,5 @@
+10-22-2022 23:42:11 : INFO : logger : Successfully Instantiated load_data Class Object
+10-22-2022 23:42:11 : INFO : logger : Successfully Instantiated Preprocessing Class Object
+10-23-2022 00:23:26 : INFO : logger : Successfully Instantiated Outlier Class Object
+10-23-2022 00:23:59 : INFO : logger : Number of duplicated fields calculated
+10-23-2022 00:32:39 : INFO : logger : Skewness calculated

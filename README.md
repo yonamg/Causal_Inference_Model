@@ -22,7 +22,7 @@ Gokada has tasked us to work on its data to help it understand the primary cause
 * Datashader
 
 * Scikit-learn
-root folder
+### root folder
 
     requirements.txt: a text file lsiting the projet's dependancies
     .gitignore: a text file listing files and folders to be ignored

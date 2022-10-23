@@ -22,3 +22,8 @@ Gokada has tasked us to work on its data to help it understand the primary cause
 * Datashader
 
 * Scikit-learn
+root folder
+
+    requirements.txt: a text file lsiting the projet's dependancies
+    .gitignore: a text file listing files and folders to be ignored
+    README.md: Markdown text with a brief explanation of the project and the repository structure.

@@ -13,16 +13,7 @@ from pandas_profiling import ProfileReport
 
 
 class Plot:
-    def plot_profile(self, df: pd.DataFrame, title: str) -> None:
-        """Plot the profile of the dataset.
-        Args:
-            df(pd.DataFrame): Dataframe to be plotted.
-            title(str): title of chart.
-        """
-        profile = ProfileReport(df)
-        profile.to_file(output_file=f"{title}.html")
-        self.logger.info("Plotting a profile for the dataset: ")
-        return profile
+    
 
     def plot_hist(self, df: pd.DataFrame, column: str, color: str) -> None:
         """Plot the hist of the column.
